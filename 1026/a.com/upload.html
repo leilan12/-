@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX 文件跨域上传</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script src="ajaxfileupload.js"></script>
+</head>
+<body>
+    <p>
+        <input type="file" id="file1" name="file" />
+    </p>
+    <input type="button" value="上传" />
+    <p>
+        <img id="img1" alt="上传成功啦" src="" />
+    </p>
+    <script type="text/javascript">
+        $(function () {
+                            $(":button").click(function () {
+                                                                 ajaxFileUpload();
+                                                             })
+                        })
+
+            function ajaxFileUpload() {
+                    $.ajaxFileUpload
+                    (
+                      {
+                             url: 'http://b.com/1026/b.com/upload.php', //用于文件上传的服务器端请求地址
+                             secureuri: false, //是否需要安全协议，一般设置为false
+                             fileElementId: 'file1', //文件上传域的ID
+                             dataType: 'jsonp', //返回值类型 一般设置为json
+                             async : true,//异步
+                             success: function (data, status)  //服务器成功响应处理函数
+                       {
+                              var obj = JSON.parse(data);//把json字符串转换为json对象
+                               console.log(obj);
+
+
+                               $("#img1").attr("src", obj.imgurl);
+                               if (typeof (data.error) != 'undefined') {
+                                          if (data.error != '') {
+                                                                          alert(data.error);
+                                                                 } else {
+                                                                          alert(data.msg);
+                                                                         }
+                               }
+                       },
+                                   error: function (data, status, e)//服务器响应失败处理函数
+                              {
+                                   alert(e);
+                               },
+                      }
+                    )
+            }
+    </script>
+</body>
+</html>
